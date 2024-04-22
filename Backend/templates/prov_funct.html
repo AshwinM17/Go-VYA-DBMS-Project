@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Provider Functions|Go-VYA</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='/prov_funct_styles.css') }}">
+</head>
+
+<body>
+    <div class="upper">
+        <form action="/" class="button-container">
+            <button class="logo">GO-VYA</button>
+        </form>
+        <div class="hello">
+            <p>Welcome Provider {{ username }} !</p>
+            <p>Id:{{userid}}</p>
+            <form action="/" method='POST'>                
+                <button>Logout</button>
+            </form>
+        </div>
+    </div>
+    <div class="nav" id="inline">
+        <form action="/prov_funct" method='POST'>
+
+            <input type="hidden" name="todo" value=1>
+            <button>Profile</button>
+        </form>
+        <form action="/prov_funct" method='POST'>
+
+            <input type="hidden" name="todo" value=2>
+            <button>View Requests</button>
+        </form>
+
+        <form action="/prov_funct" method='POST'>
+
+            <input type="hidden" name="todo" value=3>
+            <button>Orders in Progress</button>
+        </form>
+
+        <form action="/prov_funct" method='POST'>
+
+            <input type="hidden" name="todo" value=4>
+            <button>View completed Orders</button>
+        </form>
+    </div>
+    <div class="lower">
+
+        {% if funct==1 %}
+        <div id="profile">
+            
+            <h1 id="head">Provider Profile</h1>
+        <table align="center" border="0">
+            <tr>
+                <th>Provider ID:</th>
+                <td>{{user_data[0]}}</td>
+            </tr>
+            <tr>
+                <th>Name:</th>
+                <td>{{user_data[1]}}</td>
+            </tr>
+            <tr>
+                <th>Email:</th>
+                <td>{{user_data[2]}}</td>
+            </tr>
+            <tr>
+                <th>Scale:</th>
+                <td>{{user_data[3]}}</td>
+            </tr>
+            <tr>
+                <th>Office Address:</th>
+                <td>{{user_data[4]}}</td>
+            </tr>
+            <!-- select user_ID,name,email,p_scale,p_officeaddr,p_phoneNo,p_multiplier,p_PAN,p_GST from user join provider on user_id=p_id where p_id= -->
+            <tr>
+                <th>Phone Number:</th>
+                <td>{{user_data[5]}}</td>
+            </tr>
+            <tr>
+                <th>Cost Multiplier:</th>
+                <td>{{user_data[6]}}</td>
+            </tr>
+            <tr>
+                <th>PAN:</th>
+                <td>{{user_data[7]}}</td>
+            </tr>
+            <tr>
+                <th>GST Number:</th>
+                <td>{{user_data[8]}}</td>
+            </tr>
+        </table>
+
+        {% if deletefail %}
+        <h1 id="pop_up">Failed To Delete Account,as Uncompleted orders remain</h1>
+        {%endif%}
+
+        {% if delacc%}
+        <div id="pop_up" class="yesno">
+            Are you sure you want to delete your account?<br>
+            <form action="/prov_funct" method='POST' id="but_popup">
+
+                <input type="hidden" name="todo" value=7>
+                <button>Yes</button>
+            </form>
+
+            <form action="/prov_funct" method='POST' id="but_popup">
+
+                <input type="hidden" name="todo" value=1>
+                <!-- todo=1 ie go back to profile viewing -->
+                <button>No</button>
+            </form>
+        </div>
+        {%endif%}
+        <!--  -->
+
+        <div id="inline">
+            <form action="/prov_funct" method='POST'>
+
+                <input type="hidden" name="todo" value=5>
+                <button class="danger-but">Delete Account</button>
+            </form>
+        </div>
+        {% endif %}
+    </div>
+    <div class="request_class" id="requests">
+        {% if funct==2 %}
+
+
+        <h1 id="head">Available Delivery Requests</h1>
+        {% if req_not %}
+        <h2 id="pop_up">No orders Available</h2>
+        {% endif %}
+
+        {% if req_exist %}
+        <table align="center" border="1">
+
+            <thead>
+                <tr>
+                    <th>Request ID </th>
+                    <th>Customer ID </th>
+                    <th>Weight of Package<br>(Kg) </th>
+                    <th>Size in Volume<br>(L)</th>
+                    <th>Requested Delivery Time<br>(In days)</th>
+                    <th>Distance<br>(Km)</th>
+                    <th>Scale</th>
+                    <th>Pickup Location</th>
+                    <th>Dropoff Location</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- req_ID | c_ID | req_weight | req_size | req_speed | req_dist | req_type | start   | end -->
+                {% for row in cur%}
+                <tr>
+                    <td>{{row[0]}}</td>
+                    <td>{{row[1]}}</td>
+                    <td>{{row[2]}}</td>
+                    <td>{{row[3]}}</td>
+                    <td>{{row[4]}}</td>
+                    <td>{{row[5]}}</td>
+                    <td>{{row[6]}}</td>
+                    <td>{{row[7]}}</td>
+                    <td>{{row[8]}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% if qcreate %}
+        <div id="pop_up">Quote created with the Id {{qid}}</div>
+        {% endif %}
+        {% if qnotcreate %}
+        <div id="pop_up">Unauthorized Request ID selected</div>
+        {% endif %}
+        <div class="request_form">
+
+            <p>Select the request to create a quote and Enter Quote Details</p>
+            
+            <form action="/prov_funct" method='post'>
+                
+                <input type="hidden" name="todo" value=8>
+                <input placeholder="Enter the Request ID to be accepted:" type="text" name="rid" required><br><br>
+                <input placeholder="Amount:" type="text" name="amt" required><br><br>
+                <input placeholder="Estimated Delivery time (days):" type="text" name="days" required><br><br>
+                
+                <button type="submit" class="button-container">Submit</button>
+            </form>
+        </div>
+
+
+
+        {% endif %}
+
+
+
+
+        {% endif %}
+    </div>
+
+    <div id="orders">
+        {% if funct==3 %}
+        <h1 id="head">Orders in Progress</h1>
+        {% if ordupdate %}
+        <div id="pop_up">Order Status has been Updated</div>
+        {%endif%}
+        {% if wrongid %}
+        <div id="pop_up">Unauthorized Order ID Entered</div>
+        {% endif %}
+        {% if ordinprog %}
+
+        <table align="center" border="1">
+
+            <thead>
+                <tr>
+                    <!-- order_ID,c_id,c_phoneNo,weight,size,type,speed,status,dist,bill,start,end -->
+                    <th>Order ID </th>
+                    <th>Customer ID </th>
+                    <th>Contact Number</th>
+                    <th>Weight</th>
+                    <th>Size in Vol</th>
+                    <th>Type</th>
+                    <th>Estimated Delivery Time</th>
+                    <th>Status</th>
+                    <th>Distance</th>
+                    <th>Bill Amount</th>
+                    <th>Pickup Location</th>
+                    <th>DropOff Location</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for row in cur %}
+                <tr>
+                    <td>{{row[0]}}</td>
+                    <td>{{row[1]}}</td>
+                    <td>{{row[2]}}</td>
+                    <td>{{row[3]}}</td>
+                    <td>{{row[4]}}</td>
+                    <td>{{row[5]}}</td>
+                    <td>{{row[6]}}</td>
+                    <td>{{row[7]}}</td>
+                    <td>{{row[8]}}</td>
+                    <td>{{row[9]}}</td>
+                    <td>{{row[10]}}</td>
+                    <td>{{row[11]}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="request_form">
+        <p>Update Order Status</p>
+        <form action="/prov_funct" method='POST'>
+            
+            <input type="hidden" name="todo" value=9>
+            <input placeholder="Enter OrderID:" type="text" name="ordid" id="ordid"><br><br>
+            <input placeholder="Enter Updated Status:" type="text" name="status" id="status"><br><br>
+            <button>Update</button>
+            
+        </form>
+
+        </div>
+
+        {%endif%}
+        {% if noordinprog %}
+        <p id="pop_up">Currently No Orders In Progress</p>
+        {%endif%}
+        {% endif %}
+    </div>
+
+
+    <div id="Completedorders">
+        {% if funct==4 %}
+        <h1 id="head">Previously Completed Orders</h1>
+        {% if ordercomp %}
+        <table align="center" border="1">
+
+            <thead>
+                <tr>
+                    <!-- select order_ID,c_id,c_phoneNo,weight,size,type,speed,status,dist,bill,start,end -->
+                    <th>Order ID </th>
+                    <th>Customer ID </th>
+                    <th>Contact Number</th>
+                    <th>Weight</th>
+                    <th>Size in Vol</th>
+                    <th>Type</th>
+                    <th>Delivery Time</th>
+
+                    <th>Distance</th>
+                    <th>Bill Amount</th>
+                    <th>Pickup Location</th>
+                    <th>DropOff Location</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for row in cur %}
+                <tr>
+                    <td>{{row[0]}}</td>
+                    <td>{{row[1]}}</td>
+                    <td>{{row[2]}}</td>
+                    <td>{{row[3]}}</td>
+                    <td>{{row[4]}}</td>
+                    <td>{{row[5]}}</td>
+                    <td>{{row[6]}}</td>
+
+                    <td>{{row[8]}}</td>
+                    <td>{{row[9]}}</td>
+                    <td>{{row[10]}}</td>
+                    <td>{{row[11]}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {%endif%}
+        {% if noordercomp %}
+        <p id="pop_up">No orders Previously Completed</p>
+        {%endif%}
+        {% endif %}
+    </div>
+    </div>
+
+
+
+
+</body>
+
+</html>

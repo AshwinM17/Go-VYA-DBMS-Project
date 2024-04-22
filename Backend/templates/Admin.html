@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Controls|Go-VYA</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='/admin_styles.css') }}">
+
+</head>
+
+<body>
+    <div class="upper">
+        <form action="/" class="button-container">
+            <button class="logo">GO-VYA</button>
+        </form>
+        <div class="hello">
+            <p>Welcome Admin {{username}}</p>
+            <p>Id: {{userid}}</p>
+
+            <form action="/" method='POST'>
+                <input type="hidden" name="todo" value=99>
+                <button>Logout</button>
+            </form>
+        </div>
+    </div>
+    <div class="lower" id="inline">
+        <div class="dashbut">
+            <img src="./../static/verify_regis.png" alt="verify registeration">
+            <form action="/admin_funct" method="POST">
+                <input type="hidden" name="todo" value=1>
+                <button type="submit" class="button-container">Verify registeration requests</button>
+            </form>
+        </div>
+
+        <div class="dashbut">
+            <img src="./../static/inprogress.png" alt="order status">
+            <form action="/admin_funct" method="POST">
+                <input type="hidden" name="todo" value=2>
+                <button type="submit" class="button-container">View Orders</button>
+            </form>
+        </div>
+        <div class="dashbut">
+            <img src="./../static/employee.png" alt="Employees">
+            <form action="/admin_funct" method="POST">
+                <input type="hidden" name="todo" value=3>
+                <button type="submit" class="button-container">View Employees</button>
+            </form>
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var dashbuts = document.querySelectorAll('.dashbut');
+
+            dashbuts.forEach(function (dashbut) {
+                dashbut.addEventListener('click', function () {
+                    var button = this.querySelector('button[type="submit"]');
+                    if (button) {
+                        button.click();
+                    }
+                });
+            });
+        });
+    </script>
+
+
+</body>
+
+</html>

@@ -1,1 +1,1 @@
-# Go-VYA-DBMS-Project
+# dbms-project

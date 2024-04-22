@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Functions</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='/admin_funct_styles.css') }}">
+
+</head>
+
+<body>
+    <div class="upper">
+        <form action="/" class="button-container">
+            <button class="logo">GO-VYA</button>
+        </form>
+        <div class="hello">
+            <p>Welcome Admin {{username}}</p>
+            <p>Id:{{userid}}</p>
+
+            <form action="/" method='POST'>
+                <input type="hidden" name="todo" value=99>
+                <button>Logout</button>
+            </form>
+        </div>
+    </div>
+    <div class="nav">
+
+        <form action="/admin_funct" method="POST">
+
+            <input type="hidden" name="todo" value=1>
+            <button type="submit" class="button-container">Verify registeration requests</button>
+        </form>
+
+        <form action="/admin_funct" method="POST">
+
+            <input type="hidden" name="todo" value=2>
+            <button type="submit" class="button-container">View Order Status</button>
+        </form>
+
+        <form action="/admin_funct" method="POST">
+            <input type="hidden" name="todo" value=3>
+            <button class="button-container">View Employees</button>
+        </form>
+
+
+    </div>
+
+    <div class="lower">
+
+        {% if funct==3 %}
+        <h1 id="text">Employees</h1>
+        <table align="center" border="1">
+            
+            <thead>
+                
+                <tr>
+                    <th>Employee ID: </th>
+                    <th>Email ID: </th>
+                    <th>Salary </th>
+                    <th>Employee Phone No(s):</th>
+                    <th>Is Assisting <br>(0 means not assigned)</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                
+                {%for row in cur%}
+                <tr>
+                    <td>{{row[0]}}</td>
+                    <td>{{row[1]}}</td>
+                    <td>{{row[2]}}</td>
+                    <td>
+                        {% for row2 in cur2 %}
+                        {% if row[0]==row2[0] %}
+                        {{row2[1]}}<br>
+                        {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td>{{row[3]}}</td>
+                    
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+    {% endif %}
+    {%if flag%}
+    <table align="center" border="1">
+        <thead>
+
+            <tr>
+                <th>p_ID </th>
+                <th>p_scale </th>
+                <th>p_officeaddr </th>
+                <th>p_phoneNo</th>
+                <th>p_multiplier</th>
+                <th>p_PAN</th>
+                <th>p_GST</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+            {%for row in cur%}
+            <tr>
+                <td>{{row[0]}}</td>
+                <td>{{row[1]}}</td>
+                <td>{{row[2]}}</td>
+                <td>{{row[3]}}</td>
+                <td>{{row[4]}}</td>
+                <td>{{row[5]}}</td>
+                <td>{{row[6]}}</td>
+            </tr>
+            {%endfor%}
+        </tbody>
+    </table>
+    
+    {% elif funct==2 %}
+    <h1>Order Status</h1>
+    <table align="center" border="1">
+        <thead>
+            
+            <tr>
+                <th>CustomerID </th>
+                <th>ProviderID </th>
+                <th>OrderID </th>
+                <th>Weight(in Kg)</th>
+                <th>Size</th>
+                <th>Type</th>
+                <th>Speed </th>
+                <th>Start_date</th>
+                <th>Status</th>
+                <th>Distance(in Km)</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+            {%for row in cur%}
+            <tr>
+                <td>{{row[0]}}</td>
+                <td>{{row[1]}}</td>
+                <td>{{row[2]}}</td>
+                <td>{{row[3]}}</td>
+                <td>{{row[4]}}</td>
+                <td>{{row[5]}}</td>
+                <td>{{row[6]}}</td>
+                <td>{{row[7]}}</td>
+                <td>{{row[8]}}</td>
+                <td>{{row[9]}}</td>
+            </tr>
+            {%endfor%}
+        </tbody>
+    </table>
+    {% endif %}
+
+    
+    {% if success %}
+    <p id="pop_up">{{success}}</p>
+    {%endif%}
+    {% if flag %}
+    <form action="/admin_funct" method="POST">
+        <input type="hidden" name="todo" value=4>
+        <input placeholder="Enter Provider ID:" type="text" name="p_id" id="p_verify">
+        <button type="submit" class="button-container">Verify registeration request</button>
+    </form>
+    {% endif %}
+    </div>
+</body>
+
+</html>

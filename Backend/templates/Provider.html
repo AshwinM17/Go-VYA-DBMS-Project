@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Provider Dashboard|Go-VYA</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='/provider_styles.css') }}">
+
+</head>
+
+<body>
+    
+    <div class="upper">
+        <form action="/" class="button-container">
+            <button class="logo">GO-VYA</button>
+        </form>
+        <div class="hello">
+            <p>Welcome Provider {{username}}</p>
+            <p>Id: {{userid}}</p>
+
+            <form action="/" method='POST'>
+                <input type="hidden" name="todo" value=99>
+                <button>Logout</button>
+            </form>
+        </div>
+    </div>
+    <br>
+    <div class="lower" id="inline">
+        <div class="dashbut">
+
+            <form action="/prov_funct" method='POST'>
+                <img src="./../static/profile.png" alt="Profile">            
+                <input type="hidden" name="todo" value=1>
+                <button type="submit">Profile</button>
+            </form>
+        </div>
+        <div class="dashbut">
+
+            <form action="/prov_funct" method='POST'>
+                <img src="./../static/verify_regis.png" alt="view requests">            
+                <input type="hidden" name="todo" value=2>
+                <button type="submit">View Requests</button>
+            </form>
+        </div>
+        <div class="dashbut">
+
+            <form action="/prov_funct" method='POST'>
+                <img src="./../static/inprogress.png" alt="inprogress">            
+                <input type="hidden" name="todo" value=3>
+                <button type="submit">Orders in Progress</button>
+            </form>
+        </div>
+        <div class="dashbut">
+
+            <form action="/prov_funct" method='POST'>
+                <img src="./../static/completed.png" alt="completed">            
+                <input type="hidden" name="todo" value=4>
+                <button type="submit">View completed Orders</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var dashbuts = document.querySelectorAll('.dashbut');
+    
+            dashbuts.forEach(function(dashbut) {
+                dashbut.addEventListener('click', function() {
+                    var button = this.querySelector('button[type="submit"]');
+                    if (button) {
+                        button.click();
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+
+</html>
